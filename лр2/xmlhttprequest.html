@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>ФИО: <span id="container">Загрузка...</span></div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            let obj = new XMLHttpRequest();
+            obj.open('GET', '/api/name', true);
+            obj.onload = function(){
+                if(obj.status == 200){
+                    document.getElementById('container').textContent = obj.responseText;
+                }
+                else{
+                    document.getElementById('container').textContent = 'Ошибка';
+                }
+            };
+            obj.onerror = function(){
+                    document.getElementById('container').textContent = 'Ошибка';
+            }
+            obj.send();
+        });
+    </script>
+</body>
+</html>

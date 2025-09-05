@@ -24,6 +24,6 @@ http.createServer(function(request, response){
         '</html>'
 
     ))
-}).listen(3001);
+}).listen(3000);
 
-console.log('Server running at http://localhost:3001/');
+console.log('Server running at http://localhost:3000/');
