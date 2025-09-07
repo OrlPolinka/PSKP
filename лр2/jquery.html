@@ -24,20 +24,6 @@
 
 
 
-
-            fetch('/api/name')
-            .then(response =>{
-                if(!response.ok){
-                    document.getElementById('container').textContent = 'Ошибка';
-                }
-                return response.text();
-            })
-            .then(data =>{
-                    document.getElementById('container').textContent = data;
-            })
-            .catch(error =>{
-                document.getElementById('container').textContent = 'Ошибка';
-            })
             
         });
     </script>
