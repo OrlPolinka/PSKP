@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container"></div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            let container = document.getElementById('container');
+            let start = performance.now();
+            let completed = 0;
+            for(let k = 1; k <= 20; k++){
+
+            
+            
+            fetch('/fact?k=' + k)
+            .then(response =>{
+                if(!response.ok){
+                    container.textContent = 'Ошибка';
+                    
+                }
+                return response.json();
+            })
+            .then(data =>{
+                let t = Math.round(performance.now() - start);
+                let div = document.createElement('div');
+                div.className = 'result';
+                div.textContent = `Результат: ${t}-${data.k}/${data.fact}`;
+                container.appendChild(div);
+                completed++;
+                if(completed == 20){
+                    let total = Math.round(performance.now() - start);
+                    let sum = document.createElement('div');
+                    sum.className = 'sum';
+                    sum.textContent = `Общая продолжительность: ${total} мс`;
+                    container.appendChild(sum);
+                    completed++;
+                }
+            })
+            .catch(error =>{
+                container.textContent = 'Ошибка';
+            })
+            
+        }
+        });
+
+    
+    </script>
+</body>
+</html>
