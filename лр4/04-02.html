@@ -30,6 +30,8 @@
         </div>
     </div>
     <script>
+        let allData = [];
+
         function Post(){
             console.log('POST');
             fetch('http://localhost:5000/api/db', {
@@ -68,12 +70,25 @@
             }).then(response => {return response.json();})
             .then((pdata)=>{
                 console.log('pdata', pdata);
+                allData = pdata;
                 get_result.innerHTML='';
                 pdata.forEach(el => {
                     get_result.innerHTML += (el.id + '. ' + el.name + ' ' + el.bday + '<br/>');
                 });
             });
         }
+
+        document.getElementById('ID').addEventListener('input', function() {
+            let id = parseInt(this.value);
+            let found = allData.find(el => el.id === id);
+            if (found) {
+                document.getElementById('Name').value = found.name;
+                document.getElementById('BDay').value = found.bday;
+            } else {
+                document.getElementById('Name').value = '';
+                document.getElementById('BDay').value = '';
+            }
+        });
 
     </script>
 </body>
