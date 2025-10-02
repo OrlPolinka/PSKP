@@ -38,6 +38,10 @@ function DB(){
         }
         return null;
     };
+    this.commit = () => {
+        console.log('DB.COMMIT');
+        this.emit('COMMIT');
+    };
 }
 
 util.inherits(DB, ee.EventEmitter);
