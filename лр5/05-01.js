@@ -40,7 +40,7 @@ process.stdin.on('data', line => {
                 console.log('Server stoped');
                 process.exit(0);
             }, parseInt(arg)*1000);
-            stopTimer.unref();  //не блокирует выход
+            stopTimer.unref();  
         } else{
             stopTimer = null;
         }
@@ -117,17 +117,17 @@ db.on('DELETE', (req, res)=>{
 
 http.createServer(function(request, response){
     if(url.parse(request.url).pathname == '/'){
-        countRequest();
+        
         let html = fs.readFileSync('05-01.html');
         response.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
         response.end(html);
     }
     else if(url.parse(request.url).pathname == '/api/db'){
-        countRequest();
+        
         db.emit(request.method, request, response);
     }
     else if(url.parse(request.url).pathname == '/api/ss'){
-        countRequest();
+        
         response.writeHead(200, {'Content-Type': 'application/json'});
         response.end(JSON.stringify({
             start: stats.start,

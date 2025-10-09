@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/OrlPolinka/PSKP#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "sendmail": "^1.6.1"
   }
 }
