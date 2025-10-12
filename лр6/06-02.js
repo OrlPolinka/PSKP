@@ -17,7 +17,7 @@ http.createServer(function(request, response){
         request.on('end', () => {
             let data = queryString.parse(body);
 
-            sendmail ({
+            sendmail ({ 
                 from: data.from,
                 to: data.to,
                 subject: 'Message from form',

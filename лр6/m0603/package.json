@@ -1,0 +1,17 @@
+{
+  "name": "m0603polinss",
+  "version": "1.0.0",
+  "description": "Модуль для отправки email через sendmail с fallback на nodemailer",
+  "main": "m0603.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Polina",
+  "license": "ISC",
+  "dependencies": {
+    "sendmail": "^1.4.0",
+    "nodemailer": "^6.9.0"
+  }
+  
+}
