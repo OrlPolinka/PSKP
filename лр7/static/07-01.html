@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/script.js" defer></script>
+</head>
+<body>
+    <h1>Демонстрация статических файлов</h1>
+
+    <h3>Картинка:</h3>
+    <img src="/img/image.png" alt="Demo Image" width="200">
+
+    <h3>Видео:</h3>
+    <video controls width="300">
+        <source src="/video/video.mp4" type="video/mp4">
+    </video>
+
+    <h3>Документ:</h3>
+    <p><a href="/docs/file.docx" download>Скачать DOCX</a></p>
+
+    <h3>JSON:</h3>
+    <div id="json-content"></div>
+
+    <h3>XML:</h3>
+    <div id="xml-content"></div>
+
+
+  <script>
+    fetch('/data/data.json')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('json-content').textContent = JSON.stringify(data);
+      });
+
+    fetch('/data/data.xml')
+      .then(res => res.text())
+      .then(xml => {
+        document.getElementById('xml-content').textContent = xml;
+      });
+  </script>
+</body>
+</html>
