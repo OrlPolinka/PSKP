@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 
-let prfx = process.argv[2] || A;    //first parameter
+let prfx = process.argv[2] || A; 
 console.log('Client prefix = ' + prfx);
 
 const ws = new WebSocket('ws://localhost:5000/broadcast');

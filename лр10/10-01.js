@@ -11,7 +11,7 @@ http.createServer((req, res) => {
     }
     else{
         res.writeHead(400, {'Content-Type': 'text/plain; charset=utf-8'});
-        res.end('Страница не найдена');
+        res.end('Bad Request');
     }
 }).listen(3000);
 

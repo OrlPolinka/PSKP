@@ -7,7 +7,7 @@ socket.onopen = () => {
     console.log('socket.onopen');
     interval = setInterval(() => {
         if(socket.readyState == WebSocket.OPEN)
-            socket.send(`10-01-client: ${++k}`);
+            socket.send(`10-02-client: ${++k}`);
     }, 3000);
 
     setTimeout(() => {
