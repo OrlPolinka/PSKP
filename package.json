@@ -18,10 +18,12 @@
   },
   "homepage": "https://github.com/OrlPolinka/PSKP#readme",
   "dependencies": {
+    "async": "^3.2.6",
     "busboy": "^1.6.0",
     "express": "^5.1.0",
     "m0603": "^1.0.2",
     "nodemailer": "^7.0.9",
+    "rpc-websockets": "^9.3.1",
     "sendmail": "^1.6.1",
     "ws": "^8.18.2",
     "xml2js": "^0.6.2",
