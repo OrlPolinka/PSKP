@@ -1,0 +1,48 @@
+# Build results
+bin/
+obj/
+Debug/
+Release/
+x64/
+*.exe
+*.dll
+*.lib
+*.pdb
+*.zip
+
+# Visual Studio files
+.vs/
+*.ipch
+*.pch
+*.obj
+*.exe
+*.dll
+*.zip
+*.VC.db
+*.opendb
+*.vcxproj.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# IntelliSense и кеши
+*.ipch
+*.iobj
+*.idb
+*.opendb
+*.VC.db
+
+# Логи
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Other generated files
+*.cache
+*.db
+*.mdb
+*.res
