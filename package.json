@@ -20,8 +20,9 @@
   "dependencies": {
     "async": "^3.2.6",
     "busboy": "^1.6.0",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "m0603": "^1.0.2",
+    "mssql": "^12.2.0",
     "nodemailer": "^7.0.9",
     "rpc-websockets": "^9.3.1",
     "sendmail": "^1.6.1",
