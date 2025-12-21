@@ -10,6 +10,8 @@ insert into AUDITORIUM_TYPE   (AUDITORIUM_TYPE, AUDITORIUM_TYPENAME )         va
 insert into AUDITORIUM_TYPE   (AUDITORIUM_TYPE,  AUDITORIUM_TYPENAME )          values  ('ЛБ-X', 'Химическая лаборатория');
 insert into AUDITORIUM_TYPE   (AUDITORIUM_TYPE, AUDITORIUM_TYPENAME )        values  ('ЛБ-СК', 'Спец. компьютерный класс');
 
+drop table AUDITORIUM_TYPE;
+
 create table AUDITORIUM 
 (   AUDITORIUM   char(20)  constraint AUDITORIUM_PK  primary key,              
     AUDITORIUM_TYPE     char(10) constraint  AUDITORIUM_AUDITORIUM_TYPE_FK foreign key         
@@ -42,6 +44,7 @@ insert into  AUDITORIUM   (AUDITORIUM,   AUDITORIUM_NAME,
 AUDITORIUM_TYPE, AUDITORIUM_CAPACITY )     
 values  ('408-2',   '408-2', 'ЛК',  90);
 
+drop table AUDITORIUM;
 
   create table FACULTY
   (    FACULTY      char(10)   constraint  FACULTY_PK primary key,
