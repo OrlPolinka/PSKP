@@ -18,10 +18,19 @@ let config = {
     }
 };
 
+const poolPromise = sql.connect(config)
+    .then(pool => {
+        console.log('MSSQL connected');
+        return pool;
+    })
+    .catch(err => {
+        console.error('MSSQL connection error: ' + err.message);
+        throw err;
+    });
 
 let schemaSDL = `
     schema{
-        query: Query,
+        query: Query
         mutation: Mutation
     }
     type Faculty{
@@ -37,6 +46,7 @@ let schemaSDL = `
         teacher: String!
         teacher_name: String!
         pulpit: String!
+        faculty: String
     }
     type Subject{
         subject: String!
@@ -47,6 +57,7 @@ let schemaSDL = `
         pulpit: String!
         pulpit_name: String!
         subjects: [Subject!]
+        faculty: String
     }
     type Query{
         getFaculties(faculty: String): [Faculty!]
@@ -95,6 +106,7 @@ let schema = buildSchema(schemaSDL);
 
 let root = {
     getFaculties: async ({ faculty }) => {
+        let pool = await poolPromise;
         let req = pool.request();
         if (faculty) {
         req.input('FACULTY', sql.Char(10), faculty);
@@ -106,6 +118,7 @@ let root = {
         }
     },
     getTeachers: async ({ teacher }) => {
+        let pool = await poolPromise;
         let req = pool.request();
         if (teacher) {
         req.input('TEACHER', sql.Char(10), teacher);
@@ -117,6 +130,7 @@ let root = {
         }
     },
     getPulpits: async ({ pulpit }) => {
+        let pool = await poolPromise;
         let req = pool.request();
         if (pulpit) {
         req.input('PULPIT', sql.Char(20), pulpit);
@@ -128,6 +142,7 @@ let root = {
         }
     },
     getSubjects: async ({ subject }) => {
+        let pool = await poolPromise;
         let req = pool.request();
         if (subject) {
         req.input('SUBJECT', sql.Char(10), subject);
@@ -139,9 +154,10 @@ let root = {
         }
     },
     getTeachersByFaculty: async ({ faculty }) => {
+        let pool = await poolPromise;
         let req = pool.request().input('FACULTY', sql.Char(10), faculty);
         let r = await req.query(`
-        SELECT t.TEACHER as teacher, t.TEACHER_NAME as teacher_name
+        SELECT t.TEACHER as teacher, t.TEACHER_NAME as teacher_name, t.PULPIT as pulpit, p.FACULTY as faculty
         FROM TEACHER t
         JOIN PULPIT p ON p.PULPIT = t.PULPIT
         WHERE p.FACULTY = @FACULTY
@@ -149,10 +165,11 @@ let root = {
         return r.recordset;
     },
     getSubjectsByFaculties: async ({ faculty }) => {
+        let pool = await poolPromise;
         let req = pool.request().input('FACULTY', sql.Char(10), faculty);
         let r = await req.query(`
-        SELECT p.PULPIT as pulpit, p.PULPIT_NAME as pulpit_name,
-        s.SUBJECT as subject, s.SUBJECT_NAME as subject_name
+        SELECT p.PULPIT as pulpit, p.PULPIT_NAME as pulpit_name, p.FACULTY as faculty,
+        s.PULPIT as s_pulpit, s.SUBJECT as subject, s.SUBJECT_NAME as subject_name
         FROM PULPIT p
         LEFT JOIN SUBJECT s ON s.PULPIT = p.PULPIT
         WHERE p.FACULTY = @FACULTY
@@ -162,7 +179,7 @@ let root = {
         let map = new Map();
         for (let row of r.recordset) {
             if (!map.has(row.pulpit)) {
-                map.set(row.pulpit, { pulpit: row.pulpit, pulpit_name: row.pulpit_name, subjects: [] });
+                map.set(row.pulpit, { pulpit: row.pulpit, pulpit_name: row.pulpit_name, faculty: row.faculty, subjects: [] });
             }
             if (row.subject) {
                 map.get(row.pulpit).subjects.push({
@@ -177,6 +194,7 @@ let root = {
 
 
     setFaculty: async ({ faculty }) => {
+        let pool = await poolPromise;
         let req = pool.request()
         .input('FACULTY', sql.Char(10), faculty.faculty)
         .input('FACULTY_NAME', sql.VarChar(50), faculty.faculty_name);
@@ -194,6 +212,7 @@ let root = {
         return faculty;
     },
     setPulpit: async ({ pulpit }) => {
+        let pool = await poolPromise;
         let req = pool.request()
         .input('PULPIT', sql.Char(20), pulpit.pulpit)
         .input('PULPIT_NAME', sql.VarChar(100), pulpit.pulpit_name)
@@ -213,6 +232,7 @@ let root = {
         return pulpit;
     },
     setTeacher: async ({ teacher }) => {
+        let pool = await poolPromise;
         let req = pool.request()
         .input('TEACHER', sql.Char(10), teacher.teacher)
         .input('TEACHER_NAME', sql.VarChar(100), teacher.teacher_name)
@@ -232,6 +252,7 @@ let root = {
         return teacher;
     },
     setSubject: async ({ subject }) => {
+        let pool = await poolPromise;
         let req = pool.request()
         .input('SUBJECT', sql.Char(10), subject.subject)
         .input('SUBJECT_NAME', sql.VarChar(100), subject.subject_name)
@@ -253,6 +274,7 @@ let root = {
 
 
     delFaculty: async ({ faculty }) => {
+        let pool = await poolPromise;
         let hasPulpits = await pool.request()
         .input('FACULTY', sql.Char(10), faculty)
         .query('SELECT TOP 1 1 AS X FROM PULPIT WHERE FACULTY = @FACULTY');
@@ -264,6 +286,7 @@ let root = {
         return r.rowsAffected[0] > 0;
     },
     delPulpit: async ({ pulpit }) => {
+        let pool = await poolPromise;
         let hasTeachers = await pool.request()
         .input('PULPIT', sql.Char(20), pulpit)
         .query('SELECT TOP 1 1 AS X FROM TEACHER WHERE PULPIT = @PULPIT');
@@ -280,12 +303,14 @@ let root = {
         return r.rowsAffected[0] > 0;
     },
     delTeacher: async ({ teacher }) => {
+        let pool = await poolPromise;
         let r = await pool.request()
         .input('TEACHER', sql.Char(10), teacher)
         .query('DELETE FROM TEACHER WHERE TEACHER = @TEACHER');
         return r.rowsAffected[0] > 0;
     },
     delSubject: async ({ subject }) => {
+        let pool = await poolPromise;
         let r = await pool.request()
         .input('SUBJECT', sql.Char(10), subject)
         .query('DELETE FROM SUBJECT WHERE SUBJECT = @SUBJECT');
@@ -305,8 +330,7 @@ let server = http.createServer(async (req, res) => {
                 schema,
                 source: query,
                 rootValue: root,
-                variableValues: variables,
-                contextValue: { pool }
+                variableValues: variables
             });
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
             res.end(JSON.stringify(result));
