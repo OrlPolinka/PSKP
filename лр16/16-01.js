@@ -175,7 +175,6 @@ let root = {
         WHERE p.FACULTY = @FACULTY
         ORDER BY p.PULPIT
         `);
-        // Группируем предметы по кафедрам
         let map = new Map();
         for (let row of r.recordset) {
             if (!map.has(row.pulpit)) {
